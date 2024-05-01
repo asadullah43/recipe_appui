@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:recipe_app/constant.dart';
+
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:recipe_app/components/categories.dart';
+import 'package:recipe_app/model/RecipeBundel.dart';
+
 import 'package:recipe_app/size_config.dart';
 
 class Body extends StatelessWidget {
@@ -10,71 +14,69 @@ class Body extends StatelessWidget {
     return const Column(
       children: [
         Categories(),
+        RecipeBundelCard(),
       ],
     );
   }
 }
-//category lsit
 
-class Categories extends StatefulWidget {
-  const Categories({super.key});
-
-  @override
-  State<Categories> createState() => _CategoriesState();
-}
-
-class _CategoriesState extends State<Categories> {
-  List<String> categories = [
-    "All",
-    "Pakistani",
-    "Indian",
-    "Italian",
-    "Mexicen",
-    "Chinese"
-  ];
-  // select index
-  int selectedIndex = 0;
+class RecipeBundelCard extends StatelessWidget {
+  const RecipeBundelCard({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: SizeConfig.defaultSize * 2),
-      child: SizedBox(
-        height: SizeConfig.defaultSize * 3.5,
-        child: ListView.builder(
-          scrollDirection: Axis.horizontal,
-          itemCount: categories.length,
-          itemBuilder: (context, index) => buildCategoriItem(index),
-        ),
-      ),
-    );
-  }
-
-  Widget buildCategoriItem(int index) {
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          selectedIndex = index;
-        });
-      },
+    double defaultSize = SizeConfig.defaultSize;
+    return AspectRatio(
+      aspectRatio: 1.65,
       child: Container(
-        alignment: Alignment.center,
-        margin: EdgeInsets.only(left: SizeConfig.defaultSize * 2),
-        padding: EdgeInsets.symmetric(
-            horizontal: SizeConfig.defaultSize * 2,
-            vertical: SizeConfig.defaultSize * 0.5),
         decoration: BoxDecoration(
-            color: selectedIndex == index
-                ? const Color(0xFFEFF3EE)
-                : Colors.transparent,
-            borderRadius: BorderRadius.circular(SizeConfig.defaultSize * 1.6)),
-        child: Text(
-          categories[index],
-          style: TextStyle(
-              fontWeight: FontWeight.bold,
-              color: selectedIndex == index
-                  ? kPrimaryColor
-                  : const Color(0xFFC2C2B5)),
+            color: recipeBundles[0].color,
+            borderRadius: BorderRadius.circular(defaultSize * 1.8)),
+        child: Row(
+          children: [
+            Expanded(
+              child: Padding(
+                padding: EdgeInsets.all(defaultSize * 2),
+                child: Column(
+                  children: [
+                    Text(
+                      recipeBundles[0].title,
+                      style: TextStyle(
+                          fontSize: defaultSize * 2.2, color: Colors.white),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 2,
+                    ),
+                    SizedBox(
+                      height: defaultSize * 0.5,
+                    ),
+                    Text(
+                      recipeBundles[0].description,
+                      style: const TextStyle(
+                        color: Colors.white54,
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 2,
+                    ),
+                    Row(
+                      children: [
+                        SvgPicture.asset("/assets/icons/chef.svg"),
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            ),
+            SizedBox(
+              width: defaultSize * 0.5,
+            ),
+            AspectRatio(
+              aspectRatio: 0.71,
+              child: Image.asset(
+                recipeBundles[0].imageSrc,
+                fit: BoxFit.cover,
+              ),
+            )
+          ],
         ),
       ),
     );
