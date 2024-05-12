@@ -59,7 +59,7 @@ class RecipeBundelCard extends StatelessWidget {
                     ),
                     Row(
                       children: [
-                        SvgPicture.asset("/assets/icons/chef.svg"),
+                        SvgPicture.asset("assets/icons/chef.svg"),
                       ],
                     )
                   ],
